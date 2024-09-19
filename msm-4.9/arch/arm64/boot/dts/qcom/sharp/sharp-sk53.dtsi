@@ -1,0 +1,154 @@
+/*
+ * Copyright (c) 2018, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+/*****************************************/
+/*  Add SHARP include                    */
+/*****************************************/
+#include "sharp_pinctrl/sharp-pinctrl-sk53.dtsi"
+#include "shdisp/sharp-shdisp-anasui.dtsi"
+#include "vib/sharp-anasui-vib.dtsi"
+#include "shub/sharp-anasui-shub.dtsi"
+#include "fingerprint/sharp-anasui-fpsensor.dtsi"
+#include "hall/sharp-anasui-hall.dtsi"
+#include "pmic/sharp-pm8953-anasui.dtsi"
+#include "pmic/sharp-pmi632-anasui.dtsi"
+
+/*----------------------------------------*/
+/* Qualcomm settings.                     */
+/*----------------------------------------*/
+
+
+/*----------------------------------------*/
+/* Add BLSP settings.                     */
+/*----------------------------------------*/
+/*------------------------------*/
+/*  BLSP#1                      */
+/*------------------------------*/
+/* NOT USE */
+
+
+/*------------------------------*/
+/*  BLSP#2                      */
+/*------------------------------*/
+/* NOT USE */
+
+
+/*------------------------------*/
+/*  BLSP#3 (I2C)                */
+/*------------------------------*/
+&i2c_3 {
+	status = "ok";
+	qcom,clk-freq-out = <400000>;	/* default: 400000 */
+	synaptics_tcm@2c {
+		status = "ok";
+		compatible = "synaptics,tcm-i2c";
+		reg = <0x2c>;
+		interrupt-parent = <&tlmm>;
+		interrupts = <65 0x2008>;
+		// vdd-supply = <&pm660_l11>;
+		// avdd-supply = <&pm660_l11>;
+		pinctrl-names = "syna_tcm_int_active", "syna_tcm_int_standby";
+		pinctrl-0 = <&syna_tcm_int_active>;
+		pinctrl-1 = <&syna_tcm_int_standby>;
+		// synaptics,bus-reg-name = "vdd";
+		// synaptics,pwr-reg-name = "avdd";
+		synaptics,irq-gpio = <&tlmm 65 0x2008>; /* IRQF_ONESHOT | IRQF_TRIGGER_LOW */
+		synaptics,irq-on-state = <0>;
+		// synaptics,reset-gpio = <&tlmm 64 0x0000>;
+		synaptics,reset-on-state = <0>;
+		synaptics,reset-active-ms = <20>;
+		synaptics,reset-delay-ms = <200>;
+		synaptics,power-delay-ms = <200>;
+		synaptics,ubl-i2c-addr = <0x2c>;
+	};
+};
+
+
+/*------------------------------*/
+/*  BLSP#4 (I2C)                */
+/*------------------------------*/
+/* can be accessed from ADSP */
+
+
+/*------------------------------*/
+/*  BLSP#5 (I2C)                */
+/*------------------------------*/
+&i2c_5 {
+	status = "ok";
+	cxd224x-i2c@28 {
+		status = "ok";
+		compatible = "cxd224x-i2c";
+		reg = <0x28>;
+		interrupt-parent = <&tlmm>;
+		interrupts = <17 0>;
+		cxd224x,irq_gpio  = <&tlmm 17 0x00>;
+		cxd224x,wake_gpio = <&tlmm 128 0x00>;
+		cxd224x,rst_gpio  = <&tlmm 16 0x00>;
+		/* cxd224x,tst1_gpio = <&pm8953_gpios 6 0x00>; */
+		pinctrl-names = "cxd224x_default_int","cxd224x_default_wake";
+		pinctrl-0 = <&nfc_nint_active>;
+		pinctrl-1 = <&nfc_pon_active>;
+    };
+};
+
+
+/*------------------------------*/
+/*  BLSP#6 (SPI)                */
+/*------------------------------*/
+&spi_6 {
+	status = "ok";
+	sensorhub@0 {
+		status = "ok";
+		compatible = "sharp,sensorhub";
+		reg = <0>;
+		spi-max-frequency = <2000000>;
+		spi-cpol;
+		spi-cpha;
+		qcom,shub-gpio-reset = <&tlmm 47 0>;
+		qcom,shub-gpio-brmp = <&tlmm 44 0>;
+		qcom,shub-gpio-int0 = <&tlmm 42 0>;
+		pinctrl-names = "shub_reset_active","shub_reset_suspend",
+			"shub_int0_active","shub_int0_suspend",
+			"shub_int0_pullup","shub_int0_pulldown",
+			"shub_brmp_active","shub_brmp_suspend";
+		pinctrl-0 = <&shub_reset_active>;
+		pinctrl-1 = <&shub_reset_suspend>;
+		pinctrl-2 = <&shub_int0_active>;
+		pinctrl-3 = <&shub_int0_suspend>;
+		pinctrl-4 = <&shub_int0_pullup>;
+		pinctrl-5 = <&shub_int0_pulldown>;
+		pinctrl-6 = <&shub_brmp_active>;
+		pinctrl-7 = <&shub_brmp_suspend>;
+		shub,shub_acc_axis_val = <1>;
+		shub,shub_gyro_axis_val = <1>;
+		shub,shub_mag_axis_val = <1>;
+	};
+};
+
+
+/*------------------------------*/
+/*  BLSP#7                      */
+/*------------------------------*/
+/* can be accessed from TZ */
+
+
+/*------------------------------*/
+/*  BLSP#8                      */
+/*------------------------------*/
+/* NOT USE */
+
+
+/*----------------------------------------*/
+/* Add SHARP settings.                    */
+/*----------------------------------------*/
+#include "camera/sharp-anasui-camera-sensor.dtsi"

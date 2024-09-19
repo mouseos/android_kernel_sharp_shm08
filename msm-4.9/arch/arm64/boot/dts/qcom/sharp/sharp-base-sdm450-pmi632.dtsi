@@ -1,0 +1,140 @@
+/*
+ * Copyright (c) 2018, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+/*****************************************/
+/* alieas                                */
+/*****************************************/
+/ {
+	aliases {
+		spi6 = &spi_6;
+	};
+};
+
+
+/*****************************************/
+/* Add SHARP BLSP node                   */
+/*****************************************/
+&soc {
+	/*------------------------------*/
+	/*  BLSP#1                      */
+	/*------------------------------*/
+	/* NOT USE */
+
+
+	/*------------------------------*/
+	/*  BLSP#2                      */
+	/*------------------------------*/
+	/* NOT USE */
+
+
+	/*------------------------------*/
+	/*  BLSP#3 (I2C)                */
+	/*------------------------------*/
+	/* BLSP1 QUP3 */
+
+
+	/*------------------------------*/
+	/*  BLSP#4 (I2C)                */
+	/*------------------------------*/
+	/* can be accessed from ADSP */
+
+
+	/*------------------------------*/
+	/*  BLSP#5 (I2C)                */
+	/*------------------------------*/
+	/* BLSP2 QUP1 */
+
+
+	/*------------------------------*/
+	/*  BLSP#6 (SPI)                */
+	/*------------------------------*/
+	/* BLSP2 QUP2 */
+	spi_6: spi@7af6000 {
+		compatible = "qcom,spi-qup-v2";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		reg-names = "spi_physical", "spi_bam_physical";
+		reg = <0x7af6000 0x600>,
+			<0x7ac4000 0x1f000>;
+		interrupt-names = "spi_irq", "spi_bam_irq";
+		interrupts = <0 300 0>, <0 239 0>;
+		spi-max-frequency = <48000000>;
+		pinctrl-names = "spi_default", "spi_sleep";
+		clocks = <&clock_gcc clk_gcc_blsp2_ahb_clk>,
+			<&clock_gcc clk_gcc_blsp2_qup2_spi_apps_clk>;
+		clock-names = "iface_clk", "core_clk";
+		qcom,infinite-mode = <0>;
+		qcom,use-bam;
+		qcom,use-pinctrl;
+		qcom,ver-reg-exists;
+		qcom,bam-consumer-pipe-index = <6>;
+		qcom,bam-producer-pipe-index = <7>;
+		qcom,master-id = <84>;
+		status = "disabled";
+	};
+
+
+	/*------------------------------*/
+	/*  BLSP#7                      */
+	/*------------------------------*/
+	/* can be accessed from TZ */
+
+
+	/*------------------------------*/
+	/*  BLSP#8                      */
+	/*------------------------------*/
+	/* NOT USE */
+
+
+};
+
+
+/*****************************************/
+/* Delete Qualcomm node/property         */
+/*****************************************/
+/*----------------------------------------*/
+/* Audio Driver.                          */
+/*----------------------------------------*/
+/* SH_AUDIO_DRIVER -> */ /*A-001*/
+&int_codec {
+	/delete-property/ qcom,cdc-us-euro-gpios;
+	/delete-property/ qcom,cdc-us-eu-gpios;
+	/delete-property/ qcom,quin-mi2s-gpios;
+
+	/delete-property/ asoc-wsa-codec-names;
+	/delete-property/ asoc-wsa-codec-prefixes;
+	/delete-property/ msm-vdd-wsa-switch-supply;
+	/delete-property/ qcom,msm-vdd-wsa-switch-voltage;
+	/delete-property/ qcom,msm-vdd-wsa-switch-current;
+};
+/* SH_AUDIO_DRIVER <- */ /*A-001*/
+
+
+/*----------------------------------------*/
+/* Wifi-Diaplay                           */
+/*----------------------------------------*/
+/* SHARP_EXTEND [WFD] qseecom_mem expansion 2018.08.31 */
+&qseecom_mem {
+	size = <0 0x1c00000>;
+};
+/* SHARP_EXTEND [WFD] qseecom_mem expansion 2018.08.31 */
+
+
+/*****************************************/
+/* Add SHARP Include                     */
+/*****************************************/
+/* SHARP_DISPLAY start */
+#include "shdisp/sharp-base-anasui-shdisp.dtsi"
+/* SHARP_DISPLAY end */
+
+#include "pmic/sharp-base-sdm450-pmi632-shpwr.dtsi"

@@ -1,0 +1,68 @@
+/* Copyright (c) 2016, The Linux Foundation. All rights reserved.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License version 2 and
+ * only version 2 as published by the Free Software Foundation.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ */
+
+&soc {
+	/*-------------------------------*/
+	/* LED color variation parameter */
+	/*-------------------------------*/
+	sharp,shled_leds_color_variation {
+		sharp,system-color-default = <0x01>;
+
+		sharp,shled-leds-calib-01 {
+			red   = <60>;
+			green = <50>;
+			blue  = <130>;
+		};
+
+		sharp,shled-leds-calib-04 {
+			red   = <60>;
+			green = <50>;
+			blue  = <130>;
+		};
+
+		sharp,shled-leds-calib-08 {
+			red   = <60>;
+			green = <50>;
+			blue  = <130>;
+		};
+
+		sharp,shled-leds-calib-0e {
+			red   = <60>;
+			green = <50>;
+			blue  = <130>;
+		};
+
+		sharp,shled-leds-calib-06 {
+			red   = <15>;
+			green = <10>;
+			blue  = <30>;
+		};
+
+		sharp,shled-leds-calib-07 {
+			red   = <15>;
+			green = <20>;
+			blue  = <50>;
+		};
+
+		sharp,shled-leds-calib-02 {
+			red   = <15>;
+			green = <25>;
+			blue  = <50>;
+		};
+
+		sharp,shled-leds-calib-05 {
+			red   = <15>;
+			green = <25>;
+			blue  = <50>;
+		};
+	};
+};
